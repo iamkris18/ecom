@@ -1,9 +1,7 @@
-# app/controllers/cart_controller.rb
 class CartController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    # Show user's cart
     @cart = current_user.cart || Cart.create(user: current_user)
     @cart_items = @cart.cart_items
   end
@@ -16,14 +14,15 @@ class CartController < ApplicationController
     
     if cart_item
       cart_item.update(quantity: cart_item.quantity + 1)
-      redirect_to cart_path, notice: "#{product.name} added to cart"
-
+      flash[:alert] = "#{product.name} added to cart"
     else
       @cart.cart_items.create(product: product, quantity: 1)
-    
-    redirect_to cart_path, notice: "#{product.name} added to cart"
+      flash[:alert] = "#{product.name} added to cart"
     end
+  
+    redirect_to products_path
   end
+  
 
   def destroy
     @cart_item = CartItem.find(params[:id])

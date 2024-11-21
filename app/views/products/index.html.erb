@@ -1,37 +1,91 @@
-<h1>All Products</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Products</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
 
-<!-- Search Input -->
-<input type="text" id="search" placeholder="Search products..." />
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between mb-4">
+      <h1 class="display-4">All Products</h1>
+      <div class="btn-group">
+        <%= link_to "Back", profile_path, class: "btn btn-secondary" %>
+        <%= link_to "Logout", logout_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "btn btn-danger" %>
+      </div>
+    </div>
 
-<%= link_to "Back", profile_path %>
+    <!-- Search Input -->
+    <div class="form-group mb-4">
+      <input type="text" id="search" class="form-control" placeholder="Search for products..." />
+    </div>
 
+    <!-- Product List -->
+    <div class="row" id="product-list">
+      <% @products.each do |prod| %>
+        <div class="col-md-4 col-sm-6 mb-4 prod" data-name="<%= prod.name.downcase %>">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">
+                <%= link_to prod.name, product_path(prod.id), class: "text-dark" %>
+              </h5>
+              <p class="card-text"><%= prod.description %></p>
+              <%= link_to 'View Details', product_path(prod.id), class: 'btn btn-primary' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
 
-<!-- Logout Link -->
-<li>
-  <%= link_to "Logout", logout_path, method: :delete, data: { confirm: "Are you sure you want to log out?" } %>
-</li>
-
-<!-- Product List -->
-<% @products.each do |prod| %>
-  <div class="prod" data-name="<%= prod.name.downcase %>">
-    <h2><%= link_to prod.name, product_path(prod.id) %></h2>
-    <p><%= prod.description %></p>
-  </div>
-<% end %>
-
-<hr>
-
-<h2>Your Cart</h2>
-
-<% if @cart_items.present? %>
-  <ul>
-    <% @cart_items.each do |item| %>
-      <li>
-        <%= item.product.name %> - Quantity: <%= item.quantity %>
-      </li>
+    <!-- Cart Section -->
+    <hr class="my-5" />
+    <h2>Your Cart</h2>
+    <% if @cart_items.present? %>
+      <ul class="list-group">
+        <% @cart_items.each do |item| %>
+          <li class="list-group-item d-flex justify-content-between">
+            <%= item.product.name %>
+            <span class="badge badge-primary">Quantity: <%= item.quantity %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>Your cart is empty.</p>
     <% end %>
-  </ul>
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
 
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Search JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const searchInput = document.getElementById("search");
+      const products = document.querySelectorAll(".prod");
+
+      searchInput.addEventListener("input", function() {
+        const searchQuery = searchInput.value.toLowerCase();
+
+        products.forEach(function(product) {
+          const productName = product.getAttribute("data-name");
+
+          if (productName.includes(searchQuery)) {
+            product.style.display = "block";
+          } else {
+            product.style.display = "none";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

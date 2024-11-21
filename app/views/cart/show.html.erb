@@ -24,7 +24,6 @@
       <% end %>
     </tbody>
   </table>
-  <%= link_to 'Back', products_path%>
 
 
   <p><strong>Total:</strong> <%= @cart_items.sum { |item| item.product.price * item.quantity }%></p>
