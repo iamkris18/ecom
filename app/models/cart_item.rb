@@ -1,7 +1,7 @@
 class CartItem < ApplicationRecord
   belongs_to :cart
   belongs_to :product
-  belongs_to :invoice
+
 
   def self.ransackable_associations(auth_object = nil)
     ["cart", "product"]

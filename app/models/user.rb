@@ -1,7 +1,6 @@
 class User < ApplicationRecord
     has_one :cart, dependent: :destroy
     has_one_attached :profile_picture
-    has_many :invoices
 
     def self.ransackable_associations(auth_object = nil)
     ["cart", "profile_picture_attachment", "profile_picture_blob"]

@@ -1,4 +1,11 @@
+require 'sidekiq/web'
+Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  username == 'admin' && password == 'password' 
+end
+
+
 Rails.application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -30,6 +37,7 @@ Rails.application.routes.draw do
   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
   delete 'cart/remove/:id', to: 'cart#destroy', as: 'remove_item'
+   mount Sidekiq::Web => '/sidekiq'
 
   
   

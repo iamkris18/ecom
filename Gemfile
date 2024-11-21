@@ -88,5 +88,9 @@ gem 'cancancan'
 gem 'sassc-rails'
 
 gem 'webpacker'
+gem 'sidekiq'
+
+gem 'dotenv-rails', groups: [:development, :test]
+
 
 

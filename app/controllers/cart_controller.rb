@@ -19,6 +19,8 @@ class CartController < ApplicationController
       @cart.cart_items.create(product: product, quantity: 1)
       flash[:alert] = "#{product.name} added to cart"
     end
+
+    AbandonedCartEmailJob.set(wait: 10.seconds).perform_later(@cart.id)
   
     redirect_to products_path
   end
