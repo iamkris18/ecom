@@ -1,5 +1,5 @@
 ActiveAdmin.register Cart do
-  permit_params :user_id, :total_price # Add other attributes as needed
+  permit_params :user_id, :total_price
 
   index do
     selectable_column

@@ -1,13 +1,9 @@
 ActiveAdmin.register User do
-  # Permitted parameters for strong parameters
   permit_params :email, :password
 
-  # Filters
   filter :email
   filter :created_at
-  # Remove any invalid filters like `user_activities_id`
 
-  # Show User Activities on User's Show Page
   show do
     attributes_table do
       row :email

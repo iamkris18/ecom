@@ -2,11 +2,11 @@ class Ability
     include CanCan::Ability
   
     def initialize(user)
-      user ||= User.new # Guest user
+      user ||= User.new
       if user.admin?
-        can :manage, :all  # Admin can manage everything
+        can :manage, :all  
       else
-        can :read, :all    # Non-admin users can read everything
+        can :read, :all    
       end
     end
   end

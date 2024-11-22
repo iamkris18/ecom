@@ -22,10 +22,9 @@ class SessionsController < ApplicationController
 
     def signup
         @user=User.new
-
     end
 
-    def create_user
+    def create_user #for sign up
         if params[:password_confirmation] == params[:password]
             @user = User.create(email: params[:email], password: [:password]) 
         else
