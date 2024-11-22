@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     def update
         @user = current_user
         if @user.update(user_params)
+          user.user_activities.create(action: 'updated profile', performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
           redirect_to profile_path, notice: 'Profile updated successfully!'
         else
           flash[:alert] = 'Error updating profile.'

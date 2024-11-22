@@ -1,18 +1,25 @@
 ActiveAdmin.register User do
+  # Permitted parameters for strong parameters
+  permit_params :email, :password
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  # permit_params :email, :password
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:email, :password]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-  
+  # Filters
+  filter :email
+  filter :created_at
+  # Remove any invalid filters like `user_activities_id`
+
+  # Show User Activities on User's Show Page
+  show do
+    attributes_table do
+      row :email
+      row :created_at
+    end
+
+    panel "User Activities" do
+      table_for user.user_activities do
+        column :action
+        column :performed_at
+        column :metadata
+      end
+    end
+  end
 end

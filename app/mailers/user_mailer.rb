@@ -9,6 +9,5 @@ class UserMailer < ApplicationMailer
           Rails.logger.error "User email is missing for user: #{@user.id}" if @user.present?
         end
       end
-      
   end
   
