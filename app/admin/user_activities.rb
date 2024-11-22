@@ -4,17 +4,17 @@ ActiveAdmin.register UserActivity do
   index do
     selectable_column
     column :user_id
-    column :user
+    column("User")
     column :action
     column :performed_at
     column :metadata
     actions
   end
+  
 
-  filter :user
+  filter :user, as: :select, collection: -> { User.pluck(:email,:id) }
   filter :action
   filter :performed_at
-  filter :metadata
 
   show do
     attributes_table do
@@ -24,6 +24,7 @@ ActiveAdmin.register UserActivity do
       row :metadata
     end
   end
+  
 
   form do |f|
     f.inputs do

@@ -94,3 +94,5 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 
 
+
+gem "ransack", "~> 4.0"
