@@ -1,45 +1,42 @@
+# app/admin/user_activities.rb
 ActiveAdmin.register UserActivity do
-
-  # Permitted parameters for strong parameters
+  # Show which fields to display in the admin dashboard
   permit_params :user_id, :action, :performed_at, :metadata
 
-  # Display columns in the index view
+  # Display the list of user activities
   index do
     selectable_column
-    id_column
-    column :user do |activity|
-      link_to activity.user.email, admin_user_path(activity.user) if activity.user
-    end
+    column :user_id
+    column :user
     column :action
     column :performed_at
     column :metadata
     actions
   end
 
-  # Filters for searching
-  filter :user, collection: proc { User.all.map { |u| [u.email, u.id] } }
+  # Allow filtering by user, action, or performed_at
+  filter :user
   filter :action
   filter :performed_at
+  filter :metadata
 
-  # Show page details
+  # Customize the show page
   show do
     attributes_table do
-      row :user do |activity|
-        link_to activity.user.email, admin_user_path(activity.user) if activity.user
-      end
+      row :user
       row :action
       row :performed_at
       row :metadata
     end
   end
 
-  # Form for creating/editing records
+  # Customize the form for creating or editing a user activity
   form do |f|
     f.inputs do
-      f.input :user, collection: User.all.map { |u| [u.email, u.id] }
+      f.input :user
       f.input :action
-      f.input :performed_at, as: :datepicker
-      f.input :metadata
+      f.input :performed_at, as: :datetime_select
+      f.input :metadata, as: :json
     end
     f.actions
   end

@@ -19,6 +19,27 @@ class SessionsController < ApplicationController
             end
         end
     end
+
+    def signup
+        @user=User.new
+
+    end
+
+    def create_user
+        if params[:password_confirmation] == params[:password]
+            @user = User.create(email: params[:email], password: [:password]) 
+        else
+            redirect_to signup_path, notice: 'Password Mismatching'
+        end
+        unless @user.nil?
+          session[:user] = @user
+          session[:user_id] = @user.id
+          @user.user_activities.create(action: 'Signed Up', performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
+          redirect_to profile_path, notice: 'Signedup successfully'
+        else
+            redirect_to signup_path, notice: 'Something went wrong'
+        end
+      end
     
     def destroy
         user=User.find(session[:user_id])

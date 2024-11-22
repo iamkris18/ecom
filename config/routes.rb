@@ -21,6 +21,9 @@ Rails.application.routes.draw do
    get '/login', to: 'sessions#new', as: 'login'
    post '/login', to: 'sessions#create'
 
+   get '/signup', to: 'sessions#signup', as: 'signup'
+   post '/signup', to: 'sessions#create_user'
+
    get '/logout', to: 'sessions#destroy'
 
    get '/cart', to: 'cart#show', as: 'cart'
@@ -36,7 +39,5 @@ Rails.application.routes.draw do
   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
    mount Sidekiq::Web => '/sidekiq'
-
-  
   
 end

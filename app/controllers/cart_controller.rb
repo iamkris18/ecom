@@ -25,7 +25,6 @@ class CartController < ApplicationController
     redirect_to products_path
   end
   
-
   def remove
     @cart_item = CartItem.find_by(id: params[:id])
     product = Product.find(@cart_item.product_id)
