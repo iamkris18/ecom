@@ -15,8 +15,10 @@
     <div class="d-flex justify-content-between mb-4">
       <h1 class="display-4">All Products</h1>
       <div class="btn-group">
-        <%= link_to "Back", profile_path, class: "btn btn-secondary" %>
+        <%= link_to "Back", profile_path, class: "btn btn-primary" %>
         <%= link_to "Logout", logout_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "btn btn-danger" %>
+        <%= link_to "Cart", cart_path, class: "btn btn-primary" %>
+
       </div>
     </div>
 

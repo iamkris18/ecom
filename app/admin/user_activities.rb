@@ -1,4 +1,4 @@
-ActiveAdmin.register UserActivity do
+ActiveAdmin.register ::UserActivity do
   permit_params :user_id, :action, :performed_at, :metadata
 
   index do
@@ -9,6 +9,10 @@ ActiveAdmin.register UserActivity do
     column :performed_at
     column :metadata
     actions
+  end
+
+  action_item :download_csv, only: :index do
+    link_to "Download CSV", admin_user_activities_path(format: :csv)
   end
   
 
