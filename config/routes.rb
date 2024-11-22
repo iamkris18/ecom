@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
    get '/cart', to: 'cart#show', as: 'cart'
    post '/cart/add/:product_id', to: 'cart#add', as: 'add_to_cart'
+   delete 'cart_items/:id', to: 'cart#remove', as: 'remove_cart_item'
+
 
    get '/profile', to: 'users#profile', as: 'profile'
    patch '/profile', to: 'users#update'
@@ -33,7 +35,6 @@ Rails.application.routes.draw do
   patch '/profile/update_email', to: 'sessions#update_email', as: 'update_email_user'
   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
-  delete 'cart/remove/:id', to: 'cart#destroy', as: 'remove_item'
    mount Sidekiq::Web => '/sidekiq'
 
   

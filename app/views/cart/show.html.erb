@@ -10,6 +10,7 @@
         <th>Quantity</th>
         <th>Price</th>
         <th>Total</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -18,13 +19,14 @@
           <td><%= cart_item.product.name %></td>
           <td><%= cart_item.quantity %></td>
           <td><%= number_to_currency(cart_item.product.price, unit: "") %></td>
-          <td><%= number_to_currency(cart_item.product.price * cart_item.quantity , unit: "") %></td>
-
+          <td><%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: "") %></td>
+            <td>
+              <%= button_to 'Remove One', remove_cart_item_path(cart_item.id), method: :delete, data: { confirm: 'Are you sure you want to remove one quantity?' } %>
+            </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-
-  <p><strong>Total:</strong> <%= @cart_items.sum { |item| item.product.price * item.quantity }%></p>
+  <p><strong>Total:</strong> <%= number_to_currency(@cart_items.sum { |item| item.product.price * item.quantity }, unit: "") %></p>
 <% end %>
