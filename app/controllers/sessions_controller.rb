@@ -48,21 +48,8 @@ class SessionsController < ApplicationController
         redirect_to login_path, notice: 'Logged out successfully!'
     end
 
-    def update_email
-        @user = current_user
-    
-        if @user.update(email_params)
-          @user.user_activities.create(action: 'updated profile', performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
-          redirect_to profile_path, notice: 'Email updated successfully!'
-        else
-          flash[:alert] = 'There was an error updating your email.'
-          render :profile
-        end
-      end
-
     def update_profile
         @user = current_user
-
         if @user.update(user_params)
             @user.user_activities.create(action: 'updated profile', performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
 
@@ -76,10 +63,6 @@ class SessionsController < ApplicationController
     
     def user_params
         params.require(:user).permit(:email, :profile_picture)
-    end
-
-    def email_params
-        params.require(:user).permit(:email)
     end
     
 end

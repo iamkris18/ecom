@@ -3,7 +3,6 @@ Sidekiq::Web.use Rack::Auth::Basic do |username, password|
   username == 'admin' && password == 'password' 
 end
 
-
 Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -35,7 +34,6 @@ Rails.application.routes.draw do
    patch '/profile', to: 'users#update'
 
    
-  patch '/profile/update_email', to: 'sessions#update_email', as: 'update_email_user'
   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
   post '/cart/invoice', to: 'cart#generate_invoice', as: :generate_invoice
