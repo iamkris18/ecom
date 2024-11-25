@@ -1,11 +1,6 @@
 class CartController < ApplicationController
   before_action :authenticate_user!
 
-  def show
-    @cart = current_user.cart || Cart.create(user: current_user)
-    @cart_items = @cart.cart_items
-  end
-
   def add
     product = Product.find(params[:product_id])
     user=session[:user]
@@ -42,6 +37,28 @@ class CartController < ApplicationController
     end
     redirect_to cart_path
   end
+  
+  def show
+    @cart = current_user.cart || Cart.create(user: current_user)
+    @cart_items = @cart.cart_items.includes(:product)
+    @total = @cart.total
+    @discounted_total = params[:discounted_total] if params[:discounted_total].present?
+  end
+  
+  def apply_coupon
+    @cart = current_user.cart || Cart.create(user: current_user)
+    total = @cart.total
+    coupon_code = params[:coupon_code]
+  
+    @discounted_total = calculate_discount(total, coupon_code)
+  
+    flash[:notice] = if @discounted_total < total
+                       "Coupon applied successfully! Discounted total is #{@discounted_total}"
+                     else
+                       "Invalid coupon code."
+                     end
+    redirect_to cart_path(discounted_total: @discounted_total)
+  end
 
   def generate_invoice
     cart = current_user.cart
@@ -61,6 +78,24 @@ class CartController < ApplicationController
     send_file file_path, filename: File.basename(file_path), type: 'application/pdf', disposition: 'inline'
     InvoiceMailer.send_invoice(current_user, invoice_pdf).deliver_now
 
+    flash[:notice] = "Invoice Downloaded"
+    redirect_to profile_path
+
   end
+
+  private
+
+  def calculate_discount(total, coupon_code)
+    case coupon_code
+    when "5PERCENT"
+      total - (total * 0.05) 
+    when "5RS"
+      [total - 5, 0].max
+    else
+      total
+    end
+  end
+
+
   
 end

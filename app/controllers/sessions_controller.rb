@@ -23,20 +23,28 @@ class SessionsController < ApplicationController
     def signup
         @user=User.new
     end
-
-    def create_user #for sign up
+    def create_user
         if params[:password_confirmation] == params[:password]
-            @user = User.create(email: params[:email], password: [:password]) 
-        else
-            redirect_to signup_path, notice: 'Password Mismatching'
-        end
-        unless @user.nil?
-          session[:user] = @user
-          session[:user_id] = @user.id
-          @user.user_activities.create(action: 'Signed Up', performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
-          redirect_to profile_path, notice: 'Signedup successfully'
-        else
+          # Find the referring user if a referral code is provided
+          referred_by_user = User.find_by(referral_code: params[:referral_code]) if params[:referral_code].present?
+      
+          @user = User.new(email: params[:email], password: params[:password])
+
+          binding.pry
+          @user.referred_by_id = referred_by_user.id if referred_by_user # Set the referred_by relationship
+          @user.referral_code = SecureRandom.hex(6) # Generate a unique referral code for this user
+      
+          if @user.save
+            session[:user] = @user
+            session[:user_id] = @user.id
+            @user.user_activities.create(action: 'Signed Up', performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
+      
+            redirect_to profile_path, notice: 'Signed up successfully!'
+          else
             redirect_to signup_path, notice: 'Something went wrong'
+          end
+        else
+          redirect_to signup_path, notice: 'Password mismatching'
         end
       end
     

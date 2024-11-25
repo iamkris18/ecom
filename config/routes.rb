@@ -31,12 +31,11 @@ Rails.application.routes.draw do
 
 
    get '/profile', to: 'users#profile', as: 'profile'
-   patch '/profile', to: 'users#update'
-
    
   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
   post '/cart/invoice', to: 'cart#generate_invoice', as: :generate_invoice
+  post '/cart/apply_coupon', to: 'cart#apply_coupon', as: :apply_coupon
 
 
    mount Sidekiq::Web => '/sidekiq'

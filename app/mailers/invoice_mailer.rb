@@ -1,5 +1,5 @@
 class InvoiceMailer < ApplicationMailer
-    default from: 'krishna@mail.com'
+    default from: 'krishna@gmail.com'
 
     def send_invoice(user, invoice_pdf)
       @user = user

@@ -1,7 +1,6 @@
 ActiveAdmin.register User do
   permit_params :email, :password
 
-  binding.pry
   filter :email, as: :string, label: 'Email (starts with)'
   filter :created_at
 
@@ -28,17 +27,19 @@ ActiveAdmin.register User do
 
     # Panel for displaying user invoices
     panel "User Invoices" do
-      table_for user.cart.cart_items do
-        column "Product" do |cart_item|
-          cart_item.product.name
-        end
-        column "Quantity" do |cart_item|
-          cart_item.quantity
-        end
-        column "Price" do |cart_item|
-          cart_item.product.price
-        end
+      if user.cart.present?
+        table_for user.cart.cart_items do
+          column "Product" do |cart_item|
+            cart_item.product.name
+          end
+          column "Quantity" do |cart_item|
+            cart_item.quantity
+          end
+          column "Price" do |cart_item|
+            cart_item.product.price
+          end
       end
+    end
 
       # Add a link to view the invoice
       if user.cart.present? && user.cart.cart_items.any?
@@ -62,7 +63,6 @@ ActiveAdmin.register User do
       return
     end
 
-    binding.pry
 
     invoice_pdf = InvoiceGenerator.new(resource, cart).generate_pdf
 
