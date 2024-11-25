@@ -38,6 +38,9 @@ Rails.application.routes.draw do
   patch '/profile/update_email', to: 'sessions#update_email', as: 'update_email_user'
   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
+  post '/cart/invoice', to: 'cart#generate_invoice', as: :generate_invoice
+
+
    mount Sidekiq::Web => '/sidekiq'
   
 end

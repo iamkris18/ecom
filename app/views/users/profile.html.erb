@@ -39,6 +39,10 @@
 <% end %>
 
 <hr>
+<div class="container text-center">
+  <%= button_to "Download Invoice", generate_invoice_path, method: :post, class: "btn btn-primary" %>
+</div>
+
 
 <div class="container text-center">
   <%= link_to "Your Cart", cart_path, class: "btn btn-secondary mx-2" %>

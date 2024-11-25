@@ -42,6 +42,24 @@ class CartController < ApplicationController
     end
     redirect_to cart_path
   end
+
+  def generate_invoice
+    cart = current_user.cart
   
+    if cart.nil? || cart.cart_items.empty?
+      redirect_to cart_path, alert: 'Your cart is empty. Add items to generate an invoice.'
+      return
+    end
+  
+    invoice_pdf = InvoiceGenerator.new(current_user, cart).generate_pdf
+    # Save the PDF file to a temporary location
+    file_path = Rails.root.join("tmp", "#{current_user.email}invoice_#{Time.current.strftime('%Y%m%d%H%M%S')}.pdf")
+    File.open(file_path, 'wb') do |file|
+      file.write(invoice_pdf)
+    end
+  
+    send_file file_path, filename: File.basename(file_path), type: 'application/pdf', disposition: 'attachment'
+
+  end
   
 end
