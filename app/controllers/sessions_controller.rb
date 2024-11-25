@@ -25,14 +25,12 @@ class SessionsController < ApplicationController
     end
     def create_user
         if params[:password_confirmation] == params[:password]
-          # Find the referring user if a referral code is provided
           referred_by_user = User.find_by(referral_code: params[:referral_code]) if params[:referral_code].present?
       
           @user = User.new(email: params[:email], password: params[:password])
-
-          binding.pry
-          @user.referred_by_id = referred_by_user.id if referred_by_user # Set the referred_by relationship
-          @user.referral_code = SecureRandom.hex(6) # Generate a unique referral code for this user
+          
+          @user.referred_by_id = referred_by_user.id if referred_by_user
+          @user.referral_code = SecureRandom.hex(3)
       
           if @user.save
             session[:user] = @user

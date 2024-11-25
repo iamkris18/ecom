@@ -69,7 +69,6 @@ class CartController < ApplicationController
     end
   
     invoice_pdf = InvoiceGenerator.new(current_user, cart).generate_pdf
-    # Save the PDF file to a temporary location
     file_path = Rails.root.join("tmp", "#{current_user.email}invoice_#{Time.current.strftime('%Y%m%d%H%M%S')}.pdf")
     File.open(file_path, 'wb') do |file|
       file.write(invoice_pdf)
