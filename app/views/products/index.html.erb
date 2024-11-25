@@ -18,7 +18,6 @@
         <%= link_to "Back", profile_path, class: "btn btn-primary" %>
         <%= link_to "Logout", logout_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "btn btn-danger" %>
         <%= link_to "Cart", cart_path, class: "btn btn-primary" %>
-
       </div>
     </div>
 
@@ -34,6 +33,14 @@
               <h5 class="card-title">
                 <%= link_to prod.name, product_path(prod.id), class: "text-dark" %>
               </h5>
+              
+              <!-- Product Image Section -->
+              <% if prod.image.attached? %>
+                <%= image_tag prod.image, class: "card-img-top", alt: "#{prod.name} image" %>
+              <% else %>
+                <%= image_tag 'default-image.jpg', class: "card-img-top", alt: "Default product image" %>
+              <% end %>
+
               <p class="card-text"><%= prod.description %></p>
               <%= link_to 'View Details', product_path(prod.id), class: 'btn btn-primary' %>
             </div>
@@ -65,27 +72,26 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('search');
-    const productList = document.getElementById('product-list');
-    
-    searchInput.addEventListener('input', function() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const products = document.querySelectorAll('.prod');
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('search');
+      const productList = document.getElementById('product-list');
       
-      products.forEach(function(product) {
-        const productName = product.getAttribute('data-name');
+      searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const products = document.querySelectorAll('.prod');
         
-        if (productName.includes(searchTerm)) {
-          product.style.display = 'block';
-        } else {
-          product.style.display = 'none';
-        }
+        products.forEach(function(product) {
+          const productName = product.getAttribute('data-name');
+          
+          if (productName.includes(searchTerm)) {
+            product.style.display = 'block';
+          } else {
+            product.style.display = 'none';
+          }
+        });
       });
     });
-  });
-</script>
-
+  </script>
 
 </body>
 </html>

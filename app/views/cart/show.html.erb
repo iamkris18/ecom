@@ -43,8 +43,6 @@
   <% end %>
   <br>
 
- <%= button_to 'Back', profile_path, method: :get%>
-
-
+<%= button_to 'Back', request.referer || root_path, method: :get %>
 
 <% end %>
