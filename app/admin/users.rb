@@ -1,8 +1,14 @@
 ActiveAdmin.register User do
   permit_params :email, :password
 
-  filter :email
+  binding.pry
+  filter :email, as: :string, label: 'Email (starts with)'
   filter :created_at
+
+  # action_item :generate_invoice, only: :show do
+  #   link_to 'Download Invoice', view_invoice_admin_user_path(resource)
+  # end
+
 
   # Customize the "Show" page
   show do
@@ -55,6 +61,8 @@ ActiveAdmin.register User do
       redirect_to admin_user_path(resource), alert: "No cart items to generate an invoice."
       return
     end
+
+    binding.pry
 
     invoice_pdf = InvoiceGenerator.new(resource, cart).generate_pdf
 

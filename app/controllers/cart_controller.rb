@@ -58,7 +58,8 @@ class CartController < ApplicationController
       file.write(invoice_pdf)
     end
   
-    send_file file_path, filename: File.basename(file_path), type: 'application/pdf', disposition: 'attachment'
+    send_file file_path, filename: File.basename(file_path), type: 'application/pdf', disposition: 'inline'
+    InvoiceMailer.send_invoice(current_user, invoice_pdf).deliver_now
 
   end
   
