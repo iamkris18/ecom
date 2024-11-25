@@ -4,9 +4,9 @@ ActiveAdmin.register User do
   filter :email, as: :string, label: 'Email (starts with)'
   filter :created_at
 
-  # action_item :generate_invoice, only: :show do
-  #   link_to 'Download Invoice', view_invoice_admin_user_path(resource)
-  # end
+  action_item :generate_invoice, only: :show do
+    link_to 'Download Invoice', view_invoice_admin_user_path(resource)
+  end
 
 
   # Customize the "Show" page

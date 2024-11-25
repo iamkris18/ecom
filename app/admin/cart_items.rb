@@ -4,7 +4,7 @@ ActiveAdmin.register CartItem do
   index do
     selectable_column
     id_column
-    column :cart
+    column :cart_id
     column :product
     column :quantity
     actions
@@ -16,7 +16,7 @@ ActiveAdmin.register CartItem do
 
   form do |f|
     f.inputs do
-      f.input :cart
+      f.input :cart_id
       f.input :product
       f.input :quantity
     end
