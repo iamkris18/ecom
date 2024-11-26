@@ -82,11 +82,9 @@ class CartController < ApplicationController
     send_file file_path, filename: File.basename(file_path), type: 'application/pdf', disposition: 'inline'
     InvoiceMailer.send_invoice(current_user, invoice_pdf).deliver_now
 
-    flash[:notice] = "Invoice Downloaded"
+    redirect_to profile_path, notice: "Invoice Sent"
 
   end
-
-  
 
   def checkout
     @cart = current_user.cart
@@ -105,9 +103,8 @@ class CartController < ApplicationController
   
     Rails.logger.info "Checkout complete for user #{current_user.id}. Total: #{@total}, Discounted Total: #{@discounted_total}"
 
-    redirect_to cart_path, notice: "Checkout successful! Total: #{@discounted_total}"
     else
-      redirect_to cart_path, notice: "Checkout Unsuccessful!"
+      redirect_to cart_path, alert: "Checkout Unsuccessful!"
     end
 
   end
