@@ -36,14 +36,21 @@
     <p><strong>Discounted Total:</strong> <%= number_to_currency(@discounted_total, unit: "") %></p>
   <% end %>
 
-  <%= form_with url: apply_coupon_path, method: :post, local: true do |f| %>
-    <div>
-      <%= f.label :coupon_code, "Enter Coupon Code" %>
-      <%= f.text_field :coupon_code %>
-    </div>
-    <%= f.submit "Apply Coupon" %>
-  <% end %>
-  <br>
+<%= form_with url: apply_coupon_path, method: :post, local: true do |f| %>
+  <div>
+    <%= f.label :coupon_code, "Enter Coupon Code" %>
+    <%= f.text_field :coupon_code, value: session[:coupon_code] %> <!-- Persist coupon code -->
+  </div>
+  <%= f.submit "Apply Coupon" %>
+<% end %>
+
+<%= form_with url: checkout_path, method: :post, local: true do |f| %>
+  <div>
+    <%= f.text_field :amount, value: params[:discounted_total] || @total %>
+  </div>
+  <%= f.submit "Checkout" %>
+<% end %>
+
 
 <button onclick="history.back()">Back</button>
 

@@ -46,21 +46,24 @@ class CartController < ApplicationController
   end
   
   def apply_coupon
-    @cart = current_user.cart || Cart.create(user: current_user)
-    total = @cart.total
+    @cart = current_user.cart
+    total = @cart.cart_items.sum { |item| item.quantity * item.product.price }
     coupon_code = params[:coupon_code]
-  
+    
     @discounted_total = calculate_discount(total, coupon_code)
-    UserActivity.create(user_id: session[:user_id],action: "applied coupon- #{coupon_code} ", performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
-
+  
+    session[:coupon_code] = coupon_code if @discounted_total < total
   
     flash[:notice] = if @discounted_total < total
                        "Coupon applied successfully! Discounted total is #{@discounted_total}"
                      else
                        "Invalid coupon code."
                      end
+  
+    session[:discounted_total]= @discounted_total
     redirect_to cart_path(discounted_total: @discounted_total)
   end
+  
 
   def generate_invoice
     cart = current_user.cart
@@ -80,9 +83,35 @@ class CartController < ApplicationController
     InvoiceMailer.send_invoice(current_user, invoice_pdf).deliver_now
 
     flash[:notice] = "Invoice Downloaded"
-    redirect_to profile_path
 
   end
+
+  
+
+  def checkout
+    @cart = current_user.cart
+    @total = @cart.cart_items.sum { |item| item.quantity * item.product.price }
+  
+    # Get coupon_code from session (set by apply_coupon)
+    coupon_code = session[:coupon_code]
+
+    if session[:discounted_total] == params[:amount]
+
+      generate_invoice   
+
+    @cart.cart_items.destroy_all
+
+    UserActivity.create(user_id: session[:user_id],action: "Checked Out", performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
+  
+    Rails.logger.info "Checkout complete for user #{current_user.id}. Total: #{@total}, Discounted Total: #{@discounted_total}"
+
+    redirect_to cart_path, notice: "Checkout successful! Total: #{@discounted_total}"
+    else
+      redirect_to cart_path, notice: "Checkout Unsuccessful!"
+    end
+
+  end
+  
 
   private
 

@@ -69,3 +69,9 @@ gem "prawn", "~> 2.5"
 gem 'prawn-table'
 
 gem 'mailcatcher'
+
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'pdfkit'
+
+

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
    post '/cart/invoice', to: 'cart#generate_invoice', as: :generate_invoice
    post '/cart/apply_coupon', to: 'cart#apply_coupon', as: :apply_coupon
 
+   post '/cart/checkout', to: 'cart#checkout', as: :checkout
 
    mount Sidekiq::Web => '/sidekiq'
   

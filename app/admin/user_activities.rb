@@ -4,7 +4,7 @@ ActiveAdmin.register ::UserActivity do
   index do
     selectable_column
     column :user_id
-    column("User")
+    column :user
     column :action
     column :performed_at
     column :metadata

@@ -13,8 +13,6 @@
               <!-- Display current profile picture if attached -->
               <% if @user.profile_picture.attached? %>
                 <%= image_tag @user.profile_picture.variant(resize_to_limit: [200, 200]), class: "rounded-circle mb-3", alt: "Profile Picture" %>
-              <% else %>
-                <%= image_tag 'default-profile.png', class: "rounded-circle mb-3", alt: "Default Profile Picture" %>
               <% end %>
 
               <!-- File Input for Profile Picture -->
@@ -42,7 +40,7 @@
 
 <!-- Additional Links and Actions -->
 <div class="container text-center">
-  <%= button_to "Download Invoice", generate_invoice_path, method: :post, class: "btn btn-primary mb-3" %>
+  <%= button_to "Send Invoice Via mail", generate_invoice_path, method: :post, class: "btn btn-primary mb-3" %>
 </div>
 
 <div class="container text-center">

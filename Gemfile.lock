@@ -227,7 +227,9 @@ GEM
     nokogiri (1.15.6-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    ostruct (0.6.1)
     pdf-core (0.10.0)
+    pdfkit (0.8.7.3)
     prawn (2.5.0)
       matrix (~> 0.4)
       pdf-core (~> 0.10.0)
@@ -380,6 +382,10 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    wicked_pdf (2.8.2)
+      activesupport
+      ostruct
+    wkhtmltopdf-binary (0.12.6.8)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.18)
@@ -399,6 +405,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   mailcatcher
+  pdfkit
   prawn (~> 2.5)
   prawn-table
   pry
@@ -418,6 +425,8 @@ DEPENDENCIES
   web-console
   webdrivers
   webpacker
+  wicked_pdf
+  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 2.7.3p183
