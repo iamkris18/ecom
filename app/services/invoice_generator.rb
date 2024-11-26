@@ -2,9 +2,21 @@ require 'prawn'
 require 'prawn/table'
 class InvoiceGenerator
 
-  def initialize(user, cart)
+  def initialize(user, cart, coupon_code = nil)
     @user = user
     @cart = cart
+    @coupon_code = coupon_code
+    @discount_value = apply_coupon(coupon_code) 
+  end
+
+  def apply_coupon(coupon_code)
+    if coupon_code == "DISCOUNT10"
+      discount_percentage = 0.10
+      total_price = @cart.cart_items.sum { |item| item.quantity * item.product.price }
+      return total_price * discount_percentage
+    else
+      return 0
+    end
   end
 
   def generate_pdf
@@ -52,9 +64,19 @@ class InvoiceGenerator
       pdf.table(cart_data, header: true, row_colors: %w[EEEEEE FFFFFF], cell_style: { borders: [:bottom], padding: [5, 10] })
       pdf.move_down 20
 
-      # Total Price
+      # Coupon Code and Discount
+      if @coupon_code.present? && @discount_value > 0
+        pdf.text "Coupon Code Applied: #{@coupon_code}", size: 14, style: :bold
+        pdf.text "Discount: -#{@discount_value}", size: 12
+        pdf.move_down 10
+      end
+
+      # Total Price (After Discount)
       total_price = @cart.cart_items.sum { |item| item.quantity * item.product.price }
+      adjusted_total = total_price - @discount_value
+
       pdf.text "Total: #{total_price}", size: 16, style: :bold
+      pdf.text "Discounted Total: #{adjusted_total}", size: 16, style: :bold
       pdf.move_down 20
 
       # Terms and Conditions

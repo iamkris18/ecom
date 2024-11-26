@@ -51,6 +51,8 @@ class CartController < ApplicationController
     coupon_code = params[:coupon_code]
   
     @discounted_total = calculate_discount(total, coupon_code)
+    UserActivity.create(user_id: session[:user_id],action: "applied coupon- #{coupon_code} ", performed_at: Time.current, metadata: { ip_address: request.remote_ip, device: 'desktop' })
+
   
     flash[:notice] = if @discounted_total < total
                        "Coupon applied successfully! Discounted total is #{@discounted_total}"

@@ -31,6 +31,8 @@
   <p><strong>Subtotal:</strong> <%= number_to_currency(@total, unit: "") %></p>
 
   <% if @discounted_total.present? %>
+    <% @rem = BigDecimal(@total.to_s) - BigDecimal(@discounted_total.to_s) %>
+    <p><strong>Discount Amount: -</strong> <%= number_to_currency(@rem, unit: "") %></p>
     <p><strong>Discounted Total:</strong> <%= number_to_currency(@discounted_total, unit: "") %></p>
   <% end %>
 
@@ -43,6 +45,6 @@
   <% end %>
   <br>
 
-<%= button_to 'Back', request.referer || root_path, method: :get %>
+<button onclick="history.back()">Back</button>
 
 <% end %>

@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
   root "sessions#new"
 
    get '/products', to: 'products#index'
@@ -32,10 +31,10 @@ Rails.application.routes.draw do
 
    get '/profile', to: 'users#profile', as: 'profile'
    
-  patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
+   patch '/profile/update', to: 'sessions#update_profile', as: 'update_profile_user'
 
-  post '/cart/invoice', to: 'cart#generate_invoice', as: :generate_invoice
-  post '/cart/apply_coupon', to: 'cart#apply_coupon', as: :apply_coupon
+   post '/cart/invoice', to: 'cart#generate_invoice', as: :generate_invoice
+   post '/cart/apply_coupon', to: 'cart#apply_coupon', as: :apply_coupon
 
 
    mount Sidekiq::Web => '/sidekiq'
