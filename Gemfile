@@ -75,3 +75,4 @@ gem 'wkhtmltopdf-binary'
 gem 'pdfkit'
 
 
+gem 'bootsnap', require: false
