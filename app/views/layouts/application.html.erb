@@ -9,7 +9,6 @@
   <%= javascript_importmap_tags %>
 
   <style>
-    /* Custom Styles for Flash Messages */
     .notice {
       font-size: 24px; /* Adjust the size to your preference */
       font-weight: bold;
@@ -38,7 +37,6 @@
 </head>
 
 <body>
-  <!-- Flash Messages -->
   <% if flash[:notice] %>
     <div class="notice">
       <%= flash[:notice] %>
@@ -48,9 +46,7 @@
     <p class="alert"><%= flash[:alert] %></p>
   <% end %>
 
-  <!-- Main Content -->
   <%= yield %>
 
-  <!-- Include Webpacker JavaScript Pack -->
 </body>
 </html>
