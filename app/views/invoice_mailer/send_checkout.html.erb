@@ -1,0 +1,51 @@
+<h1 style="text-align: center;">Your Cart Is Missing You</h1>
+<p style="text-align: center;">Generated on <%= Time.current.strftime('%d %b %Y') %></p>
+<hr>
+<h3>Royal Brothers</h3>
+<p>
+  560/1, Boomi Plaza, 4th and 5th Floor, 4th Cross, CMH Road,<br>
+  Indiranagar, Bengaluru, Bengaluru Urban, Karnataka 560 038<br>
+  Phone: +917795687594 / +919019595595 | WhatsApp<br>
+  Email: support@royalbrothers.com | Grievances: ceo@royalbrothers.com
+</p>
+<hr>
+<h3>Cart Details</h3>
+<h2> Your Cart is Missing You, Please checkout</h2>
+<p>
+  Invoice Number: <%= SecureRandom.hex(6).upcase %><br>
+  Date: <%= Time.current.strftime('%d %b %Y') %>
+</p>
+<h3>Bill To:</h3>
+<p><%= @user.email %></p>
+<h3>Ship To:</h3>
+<p>Same as billing address</p>
+<h3>Cart Items:</h3>
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @user.cart.cart_items.each do |item| %>
+      <tr>
+        <td><%= item.product.name %></td>
+        <td><%= item.quantity %></td>
+        <td><%= item.product.price %></td>
+        <td><%= item.quantity * item.product.price %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<h3>Total:</h3>
+<p>Subtotal: <%= @user.cart.cart_items.sum { |item| item.quantity * item.product.price } %></p>
+<h3>Terms and Conditions:</h3>
+<ul>
+  <li>All sales are final and non-refundable.</li>
+  <li>Payment must be made within the specified due date.</li>
+  <li>Please contact us for any queries related to your order.</li>
+</ul>
+<h3 style="text-align: center;">Thank you for choosing Royal Brothers!</h3>
